@@ -1,6 +1,7 @@
 package com.example.todo_list
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.icu.text.Transliterator.Position
 import android.os.Bundle
 import android.view.View
@@ -25,6 +26,11 @@ class OnboadingActivity : AppCompatActivity() {
     private lateinit var backButton: TextView
     private lateinit var binding: ActivityOnboadingBinding
 
+    companion object{
+        private const val PREFS_NAME = "MyAppPrefs"
+        private const val KEY_ONBOARDING_COMPLETE = "onboarding_complete"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -34,6 +40,11 @@ class OnboadingActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+        if (isOnboadringCompleted()){
+            val intent = Intent(this, StartScreenActivity::class.java)
+            startActivity(intent)
+            finish()
         }
         viewPager = binding.viewPager
         tabLayout = binding.tabLayout
@@ -82,8 +93,24 @@ class OnboadingActivity : AppCompatActivity() {
         }
     }
     private fun navigateToMainScreen(){
+        markOnboardingAsCompleted()
         val intent = Intent(this, StartScreenActivity::class.java)
         startActivity(intent)
         finish()
+
+    }
+    private fun markOnboardingAsCompleted(){
+        val sharedPreferences: SharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(KEY_ONBOARDING_COMPLETE, true)
+        editor.apply()
+    }
+    private fun isOnboadringCompleted():Boolean {
+        val sharedPreferences: SharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE)
+        return sharedPreferences.getBoolean(KEY_ONBOARDING_COMPLETE, false)
+    }
+
+    override fun onStart() {
+        super.onStart()
     }
 }

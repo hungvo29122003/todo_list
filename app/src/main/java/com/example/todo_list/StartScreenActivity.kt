@@ -1,6 +1,8 @@
 package com.example.todo_list
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -16,6 +18,10 @@ class StartScreenActivity : AppCompatActivity() {
     private lateinit var login_button: Button
     private lateinit var register_button: Button
     private lateinit var btn_back: ImageView
+    companion object{
+        private const val PREFS_NAME = "MyAppPrefs"
+        private const val KEY_USER_ID = "firebase_user_id"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,21 @@ class StartScreenActivity : AppCompatActivity() {
             Toast.makeText(this, "Chức năng đang phát triển", Toast.LENGTH_SHORT).show()
         }
         btn_back.setOnClickListener{
+            finish()
+        }
+    }
+    fun getUserIdFromPrefs(): String? {
+        val sharedPrefs: SharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return sharedPrefs.getString(KEY_USER_ID, null)
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        val userId = getUserIdFromPrefs()
+        if (userId != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
             finish()
         }
     }
