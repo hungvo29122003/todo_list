@@ -34,7 +34,6 @@ class StartScreenActivity : AppCompatActivity() {
         login_button.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
         register_button.setOnClickListener {
             Toast.makeText(this, "Chức năng đang phát triển", Toast.LENGTH_SHORT).show()
