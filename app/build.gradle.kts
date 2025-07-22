@@ -64,6 +64,8 @@ dependencies {
     // Firebase Authentication (sẽ tự động sử dụng phiên bản tương thích từ BOM)
     implementation ("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.firebase:firebase-analytics")
+    // Hoặc phiên bản mới nhất
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
     // Room (Thư viện lưu trữ dữ liệu)
 //    implementation(libs.androidx.room.runtime) // Thay thế latest_version
